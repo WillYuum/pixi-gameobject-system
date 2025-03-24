@@ -19,7 +19,8 @@
     "@types/node": "^22.13.11",
     "typescript": "^5.8.2"
   },
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
     "pixi.js": "^8.9.0"
   }
 }
