@@ -27,6 +27,7 @@ export class GameObject {
         this.components.push(component);
 
         component.gameObject = this;
+        component.enable();
 
         return component;
     }
@@ -38,8 +39,8 @@ export class GameObject {
     removeComponent(component: Component): Boolean {
         const index = this.components.indexOf(component);
         if (index !== -1) {
-            ComponentManager.getInstance().removeComponent(component);
             this.components.splice(index, 1);
+            this,component.disable();
             return true;
         }
 

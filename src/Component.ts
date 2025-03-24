@@ -8,15 +8,32 @@ import { GameObject } from "./GameObject";
 export class Component {
     gameObject: GameObject | undefined;
 
-    constructor() {
-        //TODO: I believe it's better to have this happen when I add the component to a GameObject
-        ComponentManager.getInstance().addComponent(this);
-    }
-
     awake() {
 
     }
 
+    enable() {
+        ComponentManager.getInstance().addComponent(this);
+        this.onEnable();
+    }
+
+    disable(){
+        ComponentManager.getInstance().removeComponent(this);
+        this.onDisable();
+    }
+
+    onDisable(){
+
+    }
+
+    onEnable(){
+
+    }
+
     update(deltaTime: number) {
+    }
+
+    destroy(){
+        this.disable();
     }
 }
