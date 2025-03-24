@@ -1,0 +1,25 @@
+{
+  "name": "@willyuum/pixi-gameobject-system",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "pixi",
+    "gameobject",
+    "component"
+  ],
+  "author": "WillYuum",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "pixi.js": "^8.9.0"
+  }
+}
