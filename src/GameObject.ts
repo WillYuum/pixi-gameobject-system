@@ -27,7 +27,7 @@ export class GameObject {
         this.components.push(component);
 
         component.gameObject = this;
-        component.enable();
+        component.enabled = true;
 
         return component;
     }
@@ -40,7 +40,7 @@ export class GameObject {
         const index = this.components.indexOf(component);
         if (index !== -1) {
             this.components.splice(index, 1);
-            this,component.disable();
+            component.enabled = false;
             return true;
         }
 

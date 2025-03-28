@@ -7,33 +7,47 @@ import { GameObject } from "./GameObject";
  */
 export class Component {
     gameObject: GameObject | undefined;
+    private _enabled: boolean = false;
+    private _isAwake: boolean = false;
 
-    awake() {
+    constructor() {}
 
+    /** Called once when the component is first enabled. */
+    awake() {}
+
+    /** Called every time the component is enabled. */
+    onEnable() {}
+
+    /** Called every time the component is disabled. */
+    onDisable() {}
+
+    /** Called every frame. */
+    update(deltaTime: number) {}
+
+    /** Called before the component is destroyed. */
+    destroy() {
     }
 
-    enable() {
-        ComponentManager.getInstance().addComponent(this);
-        this.onEnable();
+    /** Getter and setter for enabling/disabling the component */
+    get enabled(): boolean {
+        return this._enabled;
     }
 
-    disable(){
-        ComponentManager.getInstance().removeComponent(this);
-        this.onDisable();
-    }
+    set enabled(value: boolean) {
+        if (this._enabled === value) return;
 
-    onDisable(){
+        this._enabled = value;
 
-    }
-
-    onEnable(){
-
-    }
-
-    update(deltaTime: number) {
-    }
-
-    destroy(){
-        this.disable();
+        if (value) {
+            if (!this._isAwake) {
+                this.awake();
+                this._isAwake = true;
+            }
+            ComponentManager.getInstance().addComponent(this);
+            this.onEnable();
+        } else {
+            ComponentManager.getInstance().removeComponent(this);
+            this.onDisable();
+        }
     }
 }
