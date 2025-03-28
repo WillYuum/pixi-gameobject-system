@@ -24,10 +24,20 @@ export class Component {
     /** Called every frame. */
     update(deltaTime: number) {}
 
-    /** Called before the component is destroyed. */
+    /** Properly destroys the component to allow garbage collection. */
     destroy() {
-    }
+        this.enabled = false; // Ensure `onDisable` is called
 
+        if (this.gameObject) {
+            this.gameObject.removeComponent(this);
+        }
+
+        ComponentManager.getInstance().removeComponent(this);
+
+        // Break references to allow GC
+        this.gameObject = undefined;
+    }
+    
     /** Getter and setter for enabling/disabling the component */
     get enabled(): boolean {
         return this._enabled;
