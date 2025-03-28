@@ -30,17 +30,16 @@ export class ComponentManager {
         }
     }
 
-    // Register a component for updating
+
+
     addComponent(component: Component) {
         this.components.add(component);
     }
 
-    // Remove a component when it's no longer needed
     removeComponent(component: Component) {
         this.components.delete(component);
     }
 
-    // Update all components
     updateComponents(deltaTime: number) {
         for (let component of this.components) {
             component.update(deltaTime);

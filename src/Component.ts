@@ -10,22 +10,32 @@ export class Component {
     private _enabled: boolean = false;
     private _isAwake: boolean = false;
 
-    constructor() {}
+    constructor() { }
 
-    /** Called once when the component is first enabled. */
-    awake() {}
+    /** Called once when the Component Manager Calls Awake */
+    awake() { }
 
-    /** Called every time the component is enabled. */
-    onEnable() {}
+    /** Called every time the component is added to the gameobject or when switching enabled value to true. */
+    onEnable() { }
 
-    /** Called every time the component is disabled. */
-    onDisable() {}
+    /** Called every time  the component is removed from the gameobject or when switching enabled value to false. */
+    onDisable() { }
 
     /** Called every frame. */
-    update(deltaTime: number) {}
+    update(deltaTime: number) { }
 
-    /** Called before the component is destroyed. */
+    /** Properly destroys the component to allow garbage collection. */
     destroy() {
+        this.enabled = false; // Ensure `onDisable` is called
+
+        if (this.gameObject) {
+            this.gameObject.removeComponent(this);
+        }
+
+        ComponentManager.getInstance().removeComponent(this);
+
+        // Break references to allow GC
+        this.gameObject = undefined;
     }
 
     /** Getter and setter for enabling/disabling the component */
@@ -35,6 +45,10 @@ export class Component {
 
     set enabled(value: boolean) {
         if (this._enabled === value) return;
+
+        if (!this.gameObject) {
+            throw new Error("Component must be added to a GameObject before enabling/disabling.");
+        }
 
         this._enabled = value;
 
