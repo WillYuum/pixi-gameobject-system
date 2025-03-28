@@ -1,4 +1,4 @@
-name: Automated Release
+name: Release
 
 on:
   push:
@@ -8,21 +8,20 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for versioning
+          fetch-depth: 0 # Needed for Semantic Release
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.8.1
           registry-url: "https://registry.npmjs.org/"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Semantic Release
         env:
