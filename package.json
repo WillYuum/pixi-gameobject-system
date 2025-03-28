@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WillYuum/pixi-gameobject-system.git"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
