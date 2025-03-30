@@ -1,6 +1,6 @@
 import { Component } from "./Component";
 import { Container, ViewContainer } from "pixi.js";
-import { ComponentManager } from "./ComponentManager";
+import { internal_ComponentManager } from "./ComponentManager";
 
 /**
  * GameObject class is a container for components and visual components.
@@ -27,7 +27,8 @@ export class GameObject {
         this.components.push(component);
 
         component.gameObject = this;
-        component.enabled = true;
+        internal_ComponentManager.queueAwake(component);
+        internal_ComponentManager.addComponent(component);
 
         return component;
     }

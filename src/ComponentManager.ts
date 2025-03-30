@@ -1,48 +1,52 @@
+/**
+ * This module handles the management and operation of all components in the system.
+ * Components are managed through internal and public APIs for adding, removing, updating, and awakening components.
+ *
+ * **Internal API**: 
+ * - Handles the internal operations of adding and removing components to/from the collection.
+ * - Should not be accessed directly by consumers of the module.
+ *
+ * **Public API**: 
+ * - Provides external methods for updating and awakening all components in the collection.
+ * - These methods are safe to call from other parts of the codebase.
+ */
+
 import { Component } from "./Component";
 
-/**
- * ComponentManager is a singleton class which will manage all the important parts
- * in the components so they can run as expected.
- * These parts are:
- * 1. Awake all components
- * 2. Update all components
- * 3. Add components
- * 4. Remove components
- */
-export class ComponentManager {
-    private static instance: ComponentManager;
-    private components: Set<Component> = new Set();
 
-    // Private constructor to prevent direct instantiation
-    private constructor() { }
+const components: Set<Component> = new Set();
+const compsToAwake: Set<Component> = new Set();
 
-    // Get the singleton instance
-    static getInstance() {
-        if (!this.instance) {
-            this.instance = new ComponentManager();
-        }
-        return this.instance;
+
+export const internal_ComponentManager = {
+    addComponent: (component: Component) => {
+        components.add(component);
+    },
+    removeComponent: (component: Component) => {
+        components.delete(component);
+    },
+    queueAwake: (component: Component) => {
+        compsToAwake.add(component);
     }
+}
 
-    awakeComponents() {
-        for (let component of this.components) {
-            component.awake();
+export const public_ComponentManager = {
+    UpdateComponents: (deltaTime: number) => {
+        if (compsToAwake.size > 0) {
+            AwakeComponents();
+        }
+
+        for (let component of components) {
+            component.onUpdate(deltaTime);
         }
     }
+}
 
 
-
-    addComponent(component: Component) {
-        this.components.add(component);
+function AwakeComponents() {
+    for (let component of compsToAwake) {
+        component.onAwake();
     }
 
-    removeComponent(component: Component) {
-        this.components.delete(component);
-    }
-
-    updateComponents(deltaTime: number) {
-        for (let component of this.components) {
-            component.update(deltaTime);
-        }
-    }
+    compsToAwake.clear();
 }

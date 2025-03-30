@@ -1,5 +1,6 @@
-import { ComponentManager } from "./ComponentManager";
+import { internal_ComponentManager } from "./ComponentManager";
 import { GameObject } from "./GameObject";
+
 
 /**
  *  Base class for all components which will allow to add game logic in
@@ -8,12 +9,12 @@ import { GameObject } from "./GameObject";
 export class Component {
     gameObject: GameObject | undefined;
     private _enabled: boolean = false;
-    private _isAwake: boolean = false;
+    // _isAwake: boolean = false;
 
     constructor() { }
 
-    /** Called once when the Component Manager Calls Awake */
-    awake() { }
+    // Called on the first frame after the component is added to a GameObject or when the game starts.
+    onAwake() { }
 
     /** Called every time the component is added to the gameobject or when switching enabled value to true. */
     onEnable() { }
@@ -22,7 +23,7 @@ export class Component {
     onDisable() { }
 
     /** Called every frame. */
-    update(deltaTime: number) { }
+    onUpdate(deltaTime: number) { }
 
     /** Properly destroys the component to allow garbage collection. */
     destroy() {
@@ -32,7 +33,7 @@ export class Component {
             this.gameObject.removeComponent(this);
         }
 
-        ComponentManager.getInstance().removeComponent(this);
+        internal_ComponentManager.removeComponent(this);
 
         // Break references to allow GC
         this.gameObject = undefined;
@@ -53,14 +54,10 @@ export class Component {
         this._enabled = value;
 
         if (value) {
-            if (!this._isAwake) {
-                this.awake();
-                this._isAwake = true;
-            }
-            ComponentManager.getInstance().addComponent(this);
+            internal_ComponentManager.addComponent(this);
             this.onEnable();
         } else {
-            ComponentManager.getInstance().removeComponent(this);
+            internal_ComponentManager.removeComponent(this);
             this.onDisable();
         }
     }
