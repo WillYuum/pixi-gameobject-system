@@ -1,28 +1,26 @@
 {
   "compilerOptions": {
-    "target": "ESNext", // Set the JavaScript target (ESNext for modern features)
-    "module": "ESNext", // Use ESNext modules for better compatibility
-    "moduleResolution": "node", // Use node-style module resolution
-    "strict": true, // Enable strict mode for better type safety
-    "skipLibCheck": true, // Skip type checking of declaration files
-    "esModuleInterop": true, // Enable interoperability between CommonJS and ESModules
-    "forceConsistentCasingInFileNames": true, // Ensure consistent file name casing
-    "noImplicitAny": true, // Avoid implicit 'any' types
-    "resolveJsonModule": true, // Allow importing JSON files
-    "jsx": "react", // If you're using JSX (for React or similar)
-    "outDir": "./dist", // Output directory for compiled files
-    "baseUrl": ".", // Base directory for module resolution
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "outDir": "./dist",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"] // Define path mappings (e.g., for absolute imports)
+      "@/*": ["src/*"]
     },
-    "types": ["node", "pixi.js"] // Include types for Node.js and PixiJS
+    "types": ["node", "pixi.js"],
+
+    "declaration": true,
+
+    "emitDeclarationOnly": false
   },
-  "include": [
-    "src/**/*", // Include all source files
-    "types/**/*.d.ts" // Include any additional type definitions if necessary
-  ],
-  "exclude": [
-    "node_modules", // Exclude node_modules directory to speed up compilation
-    "dist" // Exclude the output directory
-  ]
+  "include": ["src/**/*", "types/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }
