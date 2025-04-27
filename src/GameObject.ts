@@ -65,4 +65,31 @@ export class GameObject {
         }
     }
 
+
+    destroy() {
+        // Destroy all visual components
+        for (const view of this.viewComponents) {
+            if (view.parent) {
+                view.parent.removeChild(view);
+            }
+            view.destroy({ children: true });
+        }
+        this.viewComponents.length = 0;
+
+        // Destroy all components
+        for (const component of this.components) {
+            component.destroy();
+        }
+        this.components.length = 0;
+
+        // Remove and destroy the holder
+        if (this.holder.parent) {
+            this.holder.parent.removeChild(this.holder);
+        }
+        this.holder.destroy({ children: true });
+
+        // Break references to allow GC
+        this.holder = null as any;
+    }
+
 }
