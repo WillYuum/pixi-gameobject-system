@@ -27,7 +27,6 @@ export class GameObject {
         this.components.push(component);
 
         component.gameObject = this;
-        internal_ComponentManager.queueAwake(component);
         internal_ComponentManager.addComponent(component);
 
         return component;

@@ -20,33 +20,33 @@ const compsToAwake: Set<Component> = new Set();
 
 export const internal_ComponentManager = {
     addComponent: (component: Component) => {
+        compsToAwake.add(component);
         components.add(component);
     },
     removeComponent: (component: Component) => {
+        const isInAwakeSet = compsToAwake.has(component);
+        if (isInAwakeSet) {
+            compsToAwake.delete(component);
+        }
+
         components.delete(component);
     },
-    queueAwake: (component: Component) => {
-        compsToAwake.add(component);
-    }
 }
 
 export const public_ComponentManager = {
-    UpdateComponents: (deltaTime: number) => {
-        if (compsToAwake.size > 0) {
-            AwakeComponents();
+    AwakeAvailableComponents: () => {
+        const noNeedToAwake = compsToAwake.size === 0;
+        if (noNeedToAwake) return;
+
+        for (let component of compsToAwake) {
+            component.onAwake();
         }
 
+        compsToAwake.clear();
+    },
+    UpdateComponents: (deltaTime: number) => {
         for (let component of components) {
             component.onUpdate(deltaTime);
         }
     }
-}
-
-
-function AwakeComponents() {
-    for (let component of compsToAwake) {
-        component.onAwake();
-    }
-
-    compsToAwake.clear();
 }
