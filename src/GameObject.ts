@@ -19,6 +19,7 @@ export class GameObject {
     constructor(name: string, parent: Container) {
         this.name = name;
         this.holder = new Container();
+        this.holder.label = name;
         parent.addChild(this.holder);
     }
 
